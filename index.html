@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Learn French</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f8ff; margin: 0; padding: 20px; }
+    h1 { color: #2c3e50; }
+    .section { margin-bottom: 30px; }
+    .card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px 0; }
+    .flashcard { cursor: pointer; }
+    .quiz input { margin-right: 10px; }
+    .story span { background: #ffffcc; cursor: help; }
+    #progress { font-weight: bold; color: #27ae60; }
+  </style>
+</head>
+<body>
+
+  <h1>🇫🇷 Learn French Daily</h1>
+  <div class="section">
+    <p>Progress: <span id="progress">0%</span></p>
+    <button onclick="updateProgress()">Complete Today’s Lesson</button>
+  </div>
+
+  <div class="section card flashcard" onclick="flipFlashcard()">
+    <p id="flashcard">Bonjour (Hello)</p>
+  </div>
+
+  <div class="section card quiz">
+    <p>What does "Merci" mean?</p>
+    <label><input type="radio" name="q1" onclick="checkQuiz(this)"> Thank you</label><br>
+    <label><input type="radio" name="q1"> Goodbye</label>
+  </div>
+
+  <div class="section card">
+    <p>🎤 Pronounce: "Je m'appelle"</p>
+    <button onclick="startVoice()">Speak</button>
+    <p id="voiceResult"></p>
+  </div>
+
+  <div class="section card story">
+    <p>Short Story: <br>
+      <span title="Hello">Bonjour</span>, je m'appelle <span title="Marie">Marie</span>. 
+      J'habite à <span title="Paris">Paris</span>.
+    </p>
+  </div>
+
+  <script>
+    let progress = 0;
+    function updateProgress() {
+      progress += 10;
+      document.getElementById('progress').innerText = progress + '%';
+    }
+
+    function flipFlashcard() {
+      const card = document.getElementById('flashcard');
+      card.innerText = card.innerText === 'Bonjour (Hello)' ? 'Hello (Bonjour)' : 'Bonjour (Hello)';
+    }
+
+    function checkQuiz(el) {
+      if (el.checked) alert('Correct!');
+    }
+
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'fr-FR';
+      recognition.onresult = function(event) {
+        const result = event.results[0][0].transcript;
+        document.getElementById('voiceResult').innerText = 'You said: ' + result;
+      };
+      recognition.start();
+    }
+  </script>
+
+</body>
+</html>
